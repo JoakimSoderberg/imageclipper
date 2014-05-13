@@ -8,22 +8,29 @@ program initially written by Naotoshi Seo.
 
 ## Requirements
 
-To build [OpenCV](http://opencv.org/) and [Boost](http://www.boost.org/)
-needs to be installed on the system:
+To build you need [CMake](http://www.cmake.org/), [OpenCV](http://opencv.org/) and [Boost](http://www.boost.org/)
+on your system.
+
+### Linux
+
+On debian.
+
+```bash
+$ sudo apt-get install cmake libopencv-dev libboost-dev
+```
 
 ### OSX
 
-Using [MacPorts](http://www.macports.org/)
+Using [MacPorts](http://www.macports.org/).
 
 ```bash
-$ sudo port install boost
-$ sudo port install opencv
+$ sudo port install cmake boost opencv
 ```
 
 ### Windows
 
 On windows you need to download [Visual Studio for Windows Desktop](http://www.visualstudio.com/)
-and of course [git](http://git-scm.com/).
+, [CMake](http://www.cmake.org/cmake/resources/software.html) and [git](http://git-scm.com/).
 
 #### Boost
 Download and unpack the 32-bit [Boost binaries](http://www.boost.org/users/download/)
