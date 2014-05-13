@@ -156,43 +156,55 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 
     if( is_directory || is_image )
     {
-        cerr << "Now reading a directory..... ";
         if( is_directory )
         {
+            cerr << "Now reading a directory..... ";
+
             param->filelist = fs::filelist( arg->reference, param->imtypes, "file" );
             if( param->filelist.empty() )
             {
-                cerr << "No image file exist under a directory " << fs::realpath( arg->reference ) << endl << endl;
                 usage( arg );
+                cerr << "No image file exist under the directory " << fs::realpath( arg->reference ) << endl << endl;
                 exit(1);
             }
-            param->fileiter = param->filelist.begin();
+
+            if ( (param->filelist.begin() + arg->frame) > param->filelist.end() )
+            {
+                usage( arg );
+                cerr << "Specified frame " << arg->frame << " is past the end of the list of "
+                     << param->filelist.size() << " files " << endl;
+                exit(1);
+            }
+
+            param->fileiter = param->filelist.begin() + arg->frame;
         }
         else
         {
             if( !fs::exists( arg->reference ) )
             {
-                cerr << "The image file " << fs::realpath( arg->reference ) << " does not exist." << endl << endl;
                 usage( arg );
+                cerr << "The image file " << fs::realpath( arg->reference ) << " does not exist." << endl << endl;
                 exit(1);
             }
             param->filelist = fs::filelist( fs::dirname( arg->reference ), param->imtypes, "file" );
+
             // step up till specified file
             for( param->fileiter = param->filelist.begin(); param->fileiter != param->filelist.end(); param->fileiter++ )
             {
                 if( fs::realpath( *param->fileiter ) == fs::realpath( arg->reference ) ) break;
             }
         }
+
         cerr << "Done!" << endl;
-        cerr << "Now showing " << fs::realpath( *param->fileiter ) << endl;
+        cerr << arg->frame << " Now showing " << fs::realpath( *param->fileiter ) << endl;
         param->img = cvLoadImage( fs::realpath( *param->fileiter ).c_str() );
     }
     else if( is_video )
     {
         if ( !fs::exists( arg->reference ) )
         {
-            cerr << "The file " << fs::realpath( arg->reference ) << " does not exist or is not readable." << endl << endl;
             usage( arg );
+            cerr << "The file " << fs::realpath( arg->reference ) << " does not exist or is not readable." << endl << endl;
             exit(1);
         }
         cerr << "Now reading a video..... ";
@@ -201,13 +213,13 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
         param->img = cvQueryFrame( param->cap );
         if( param->img == NULL )
         {
-            cerr << "The file " << fs::realpath( arg->reference ) << " was assumed as a video, but not loadable." << endl << endl;
             usage( arg );
+            cerr << "The file " << fs::realpath( arg->reference ) << " was assumed as a video, but not loadable." << endl << endl;
             exit(1);
         }
         cerr << "Done!" << endl;
         cerr << cvGetCaptureProperty( param->cap, CV_CAP_PROP_FRAME_COUNT ) << " frames totally." << endl;
-        cerr << "Now showing " << fs::realpath( arg->reference ) << " " << arg->frame << endl;
+        cerr << " Now showing " << fs::realpath( arg->reference ) << " " << arg->frame << endl;
 //#if defined(WIN32) || defined(WIN64) // for bug of OpenCV 1.0
 //        param->img->origin = 0;
 //        cvFlip( param->img );
@@ -215,8 +227,8 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
     }
     else
     {
-        cerr << "The directory " << fs::realpath( arg->reference ) << " does not exist." << endl << endl;
         usage( arg );
+        cerr << "The directory " << fs::realpath( arg->reference ) << " does not exist." << endl << endl;
         exit(1);
     }
 }
@@ -292,7 +304,7 @@ void key_callback( const ArgParam* arg, CvCallbackParam* param )
                     param->fileiter++;
                     filename = *param->fileiter;
                     param->img = cvLoadImage( fs::realpath( filename ).c_str() );
-                    cout << "Now showing " << fs::realpath( filename ) << endl;
+                    cout << (param->fileiter - param->filelist.begin()) << " Now showing " << fs::realpath( filename ) << endl;
                 }
             }
         }
@@ -304,7 +316,7 @@ void key_callback( const ArgParam* arg, CvCallbackParam* param )
                 IplImage* tmpimg;
                 param->frame = max( 1, param->frame - 1 );
                 cvSetCaptureProperty( param->cap, CV_CAP_PROP_POS_FRAMES, param->frame - 1 );
-                if( tmpimg = cvQueryFrame( param->cap ) )
+                if( (tmpimg = cvQueryFrame( param->cap )) )
                 {
                     param->img = tmpimg;
 //#if defined(WIN32) || defined(WIN64) // for bug of OpenCV 1.0
@@ -577,14 +589,14 @@ void mouse_callback( int event, int x, int y, int flags, void* _param )
     if( y >= 32768 ) y -= 65536; // change top outside to negative
 
     // MBUTTON or LBUTTON + SHIFT is to draw wathershed
-    if( event == CV_EVENT_MBUTTONDOWN || 
-        ( event == CV_EVENT_LBUTTONDOWN && flags & CV_EVENT_FLAG_SHIFTKEY ) ) // initialization
+    if( (event == CV_EVENT_MBUTTONDOWN) || 
+        ( (event == CV_EVENT_LBUTTONDOWN) && (flags & CV_EVENT_FLAG_SHIFTKEY) ) ) // initialization
     {
         param->circle.x = x;
         param->circle.y = y;
     }
-    else if( event == CV_EVENT_MOUSEMOVE && flags & CV_EVENT_FLAG_MBUTTON ||
-        ( event == CV_EVENT_MOUSEMOVE && flags & CV_EVENT_FLAG_LBUTTON && flags & CV_EVENT_FLAG_SHIFTKEY ) )
+    else if( ((event == CV_EVENT_MOUSEMOVE) && (flags & CV_EVENT_FLAG_MBUTTON)) ||
+        ( (event == CV_EVENT_MOUSEMOVE) && (flags & CV_EVENT_FLAG_LBUTTON) && (flags & CV_EVENT_FLAG_SHIFTKEY) ) )
     {
         param->rotate  = 0;
         param->shear.x = param->shear.y = 0;
