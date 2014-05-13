@@ -25,8 +25,15 @@ $ sudo port install opencv
 On windows you need to download [Visual Studio for Windows Desktop](http://www.visualstudio.com/)
 and of course [git](http://git-scm.com/).
 
-Download and unpack the [Boost binaries](http://www.boost.org/users/download/)
-and [OpenCV](http://opencv.org/downloads.html) in known directories.
+#### Boost
+Download and unpack the 32-bit [Boost binaries](http://www.boost.org/users/download/)
+
+Tested with [Boost 1.55.0 32-bit MSVC12](http://sourceforge.net/projects/boost/files/boost-binaries/1.55.0-build2/)
+
+Default location is **c:\local\boost_1_55_0**. You need to know this when building.
+
+#### OpenCV
+Download and unpack [OpenCV](http://opencv.org/downloads.html) and remember the path.
 
 ## Building
 
@@ -40,9 +47,12 @@ build solution.
 $ git clone <repo url>
 $ cd imageclipper
 $ mkdir build && cd build
-$ cmake ..
+$ cmake ..                                     # This should work in most cases.
+
 $ cmake -DOpenCV_DIR=/path/to/opencv/build/ .. # Or if you downloaded OpenCV from http://opencv.org/
-$ cmake --build .
+        -DBOOST_ROOT=/path/to/boost            # If you're using your own Boost build.
+
+$ cmake --build .                              # Builds the program.
 ```
 
 ### Windows
@@ -54,7 +64,9 @@ From the **git bash** console:
 $ git clone <repo url>
 $ cd imageclipper
 $ mkdir build && cd build
-$ cmake -DOpenCV_DIR=/path/to/opencv/build/ -DBoost_DIR=/path/to/boost/dir ..
-$ cmake --build .
+$ cmake -DOpenCV_DIR=/path/to/opencv/build/ -DBOOST_ROOT=/c/local/boost_1_55_0/ ..
+$ cmake --build . --config Release 
 $ start imageclipper.sln # If you want to open in Visual Studio instead.
 ```
+
+The executable can then be found under **build/bin/Release/imageclipper.exe**
