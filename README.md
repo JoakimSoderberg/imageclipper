@@ -16,7 +16,7 @@ on your system.
 On debian.
 
 ```bash
-$ sudo apt-get install cmake libopencv-dev libboost-dev
+$ sudo apt-get install cmake libopencv-dev libboost-all-dev
 ```
 
 ### OSX
