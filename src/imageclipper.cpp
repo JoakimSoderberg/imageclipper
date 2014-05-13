@@ -25,10 +25,6 @@
 #pragma warning(disable:4996)
 #pragma warning(disable:4244) // possible loss of data
 #pragma warning(disable:4819) // Save the file in Unicode format to prevent data loss
-#pragma comment(lib, "cv.lib")
-#pragma comment(lib, "cvaux.lib")
-#pragma comment(lib, "cxcore.lib")
-#pragma comment(lib, "highgui.lib")
 #endif
 
 #include "cv.h"
