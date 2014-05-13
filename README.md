@@ -6,26 +6,25 @@ Image Clipper
 This is a fork of the [imageclipper](https://code.google.com/p/imageclipper/)
 program initially written by Naotoshi Seo.
 
-## Requirements
+## Building
 
 To build you need [CMake](http://www.cmake.org/), [OpenCV](http://opencv.org/) and [Boost](http://www.boost.org/)
 on your system.
 
-### Linux
+### Linux & OSX
 
-On debian.
+Install requirements using your favorite package system or download the sources yourself.
 
 ```bash
 $ sudo apt-get install cmake libopencv-dev libboost-all-dev
 ```
-
-### OSX
 
 Using [MacPorts](http://www.macports.org/).
 
 ```bash
 $ sudo port install cmake boost opencv
 ```
+
 
 ### Windows
 
@@ -50,17 +49,6 @@ build solution.
 
 ### OSX & Linux
 
-```bash
-$ git clone <repo url>
-$ cd imageclipper
-$ mkdir build && cd build
-$ cmake ..                                     # This should work in most cases.
-
-$ cmake -DOpenCV_DIR=/path/to/opencv/build/ .. # Or if you downloaded OpenCV from http://opencv.org/
-        -DBOOST_ROOT=/path/to/boost            # If you're using your own Boost build.
-
-$ cmake --build .                              # Builds the program.
-```
 
 ### Windows
 
