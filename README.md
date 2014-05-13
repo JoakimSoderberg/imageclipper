@@ -11,7 +11,7 @@ program initially written by Naotoshi Seo.
 To build [OpenCV](http://opencv.org/) and [Boost](http://www.boost.org/)
 needs to be installed on the system:
 
-### OSX:
+### OSX
 
 Using [MacPorts](http://www.macports.org/)
 
@@ -26,7 +26,7 @@ On windows you need to download [Visual Studio for Windows Desktop](http://www.v
 and of course [git](http://git-scm.com/).
 
 Download and unpack the [Boost binaries](http://www.boost.org/users/download/)
-and [OpenCV](opencv.org/downloads.html) in known directories.
+and [OpenCV](http://opencv.org/downloads.html) in known directories.
 
 ## Building
 
@@ -34,7 +34,7 @@ The original Makefile used hard coded paths and did not work on OSX
 so this new project uses [CMake](http://cmake.org/) for a cross platform
 build solution.
 
-### OSX & Linux:
+### OSX & Linux
 
 ```bash
 $ git clone <repo url>
