@@ -220,10 +220,6 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
         cerr << "Done!" << endl;
         cerr << cvGetCaptureProperty( param->cap, CV_CAP_PROP_FRAME_COUNT ) << " frames totally." << endl;
         cerr << " Now showing " << fs::realpath( arg->reference ) << " " << arg->frame << endl;
-//#if defined(WIN32) || defined(WIN64) // for bug of OpenCV 1.0
-//        param->img->origin = 0;
-//        cvFlip( param->img );
-//#endif
     }
     else
     {
@@ -287,11 +283,7 @@ void key_callback( const ArgParam* arg, CvCallbackParam* param )
                 if( tmpimg != NULL )
                 //if( frame < cvGetCaptureProperty( param->cap, CV_CAP_PROP_FRAME_COUNT ) )
                 {
-                    param->img = tmpimg; 
-//#if defined(WIN32) || defined(WIN64) // for bug of OpenCV 1.0
-//                  param->img->origin = 0;
-//                  cvFlip( param->img );
-//#endif
+                    param->img = tmpimg;
                     param->frame++;
                     cout << "Now showing " << fs::realpath( filename ) << " " <<  param->frame << endl;
                 }
@@ -319,10 +311,6 @@ void key_callback( const ArgParam* arg, CvCallbackParam* param )
                 if( (tmpimg = cvQueryFrame( param->cap )) )
                 {
                     param->img = tmpimg;
-//#if defined(WIN32) || defined(WIN64) // for bug of OpenCV 1.0
-//                  param->img->origin = 0;
-//                  cvFlip( param->img );
-//#endif
                     cout << "Now showing " << fs::realpath( filename ) << " " <<  param->frame << endl;
                 }
             }
