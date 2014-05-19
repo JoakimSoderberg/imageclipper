@@ -21,15 +21,17 @@ def main():
 
 	for img in clip_images:
 		try:
-			r = re.match("(.*?\..*?)_\d+_(\d+)_(\d+)_(\d+)_(\d+)\..*?", img)
-			basename = r.group(1)
-			x = int(r.group(2))
-			y = int(r.group(3))
-			w = int(r.group(4))
-			h = int(r.group(5))
-			print("%s %d %d %d %d" % (os.path.join(args.path, basename), x, y, w, h))
+			m = re.match("(.*?\..*?)_(-?\d+)_(-?\d+)_(-?\d+)_(-?\d+)_(-?\d+)\..*?", img)
+			basename = m.group(1)
+			r = max(0, int(m.group(2)))
+			x = max(0, int(m.group(3)))
+			y = max(0, int(m.group(4)))
+			w = max(0, int(m.group(5)))
+			h = max(0, int(m.group(6)))
+			print("%s %d %d %d %d %d" % (os.path.join(args.path, basename), 1, x, y, w, h))
 		except Exception as ex:
 			print ex
+			return
 
 
 if __name__ == '__main__': main()
