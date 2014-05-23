@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6) 
 project(imageclipper)
 
+option(WITH_TBB "Turn on support for TBB, Threading Building Blocks. You must have an OpenCV compiled with support for this" OFF)
+
 if (MSVC)
 	# We link statically on windows so we don't have to copy DLLs around.
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
@@ -16,7 +18,12 @@ if (MSVC)
 	set(Boost_DETAILED_FAILURE_MSG ON)
 endif()
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+
+if (WITH_TBB)
+	find_package(TBB REQUIRED)
+endif()
 
 find_package(Boost COMPONENTS system filesystem)
 find_package(OpenCV REQUIRED)
@@ -26,6 +33,12 @@ add_executable(imageclipper src/imageclipper.cpp)
 include_directories(${Boost_INCLUDE_DIR} src)
 link_directories(${Boost_LIBRARY_DIR})
 target_link_libraries(imageclipper ${OpenCV_LIBS} ${Boost_LIBRARIES})
+
+if (WITH_TBB)
+	include_directories(${TBB_INCLUDE_DIRS})
+	link_directories(${TBB_INCLUDE_DIRS})
+	target_link_libraries(imageclipper ${TBB_LIBRARIES})
+endif()
 
 message("OpenCV Libs: ${OpenCV_LIBS}")
 message("Boost libs: ${Boost_LIBRARIES}")
