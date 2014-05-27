@@ -20,6 +20,9 @@ def main():
 	clip_images = os.listdir(args.clipdir)
 
 	for img in clip_images:
+		if os.path.isdir(os.path.join(args.clipdir, img)):
+			continue
+
 		try:
 			m = re.match("(.*?\..*?)_(-?\d+)_(-?\d+)_(-?\d+)_(-?\d+)_(-?\d+)\..*?", img)
 			basename = m.group(1)
@@ -28,7 +31,11 @@ def main():
 			y = max(0, int(m.group(4)))
 			w = max(0, int(m.group(5)))
 			h = max(0, int(m.group(6)))
-			print("%s %d %d %d %d %d" % (os.path.join(args.path, basename), 1, x, y, w, h))
+
+			base_img_path = os.path.join(args.path, basename)
+
+			if (os.path.exists(base_img_path)):
+				print("%s %d %d %d %d %d" % (base_img_path, 1, x, y, w, h))
 		except Exception as ex:
 			print ex
 			return
