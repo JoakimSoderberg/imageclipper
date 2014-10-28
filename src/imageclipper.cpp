@@ -423,6 +423,12 @@ void key_callback( const ArgParam* arg, CvCallbackParam* param )
                 //
                 // Rectangle Movement (Vi like hotkeys).
                 //
+                case 'w': 
+                param->rect.x =0; 
+                param->rect.y =0; 
+                param->rect.width = param->img->width;
+                param->rect.height = param->img->height;
+                break;
 
                 // Left.
                 case 29:
