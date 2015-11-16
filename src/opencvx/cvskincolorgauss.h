@@ -15,8 +15,8 @@
 #define CV_SKINCOLOR_GAUSS_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 

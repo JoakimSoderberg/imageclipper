@@ -24,9 +24,9 @@
 #ifndef CV_DRAWRECTANGLE_INCLUDED
 #define CV_DRAWRECTANGLE_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -81,7 +81,7 @@ CVAPI(void) cvDrawRectangle( IplImage* img,
     CvRect rect = cvRectFromRect32f( rect32f );
     float angle = rect32f.angle;
     CV_FUNCNAME( "cvDrawRectangle" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( rect.width > 0 && rect.height > 0 );
 
     if( angle == 0 && shear.x == 0 && shear.y == 0 )
@@ -174,7 +174,7 @@ CVAPI(void) cvDrawRectangle( IplImage* img,
         cvReleaseMat( &xy );
         cvReleaseMat( &xyp );
     }
-    __END__;
+    __CV_END__;
 }
 
 /**

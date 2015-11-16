@@ -25,8 +25,8 @@
 #define CV_CAT_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #include "cvsetrow.h"
 #include "cvsetcol.h"
 
@@ -61,7 +61,7 @@ CVAPI( void ) cvCat( const CvArr* src1arr, const CvArr* src2arr, CvArr* dstarr, 
     CvMat *src2 = (CvMat*)src2arr, src2stub;
     CvMat *dst  = (CvMat*)dstarr, dststub;
     CV_FUNCNAME( "cvCat" );
-    __BEGIN__;
+    __CV_BEGIN__;
     if( !CV_IS_MAT(src1) )
     {
         src1 = cvGetMat( src1, &src1stub, &coi );
@@ -117,7 +117,7 @@ CVAPI( void ) cvCat( const CvArr* src1arr, const CvArr* src2arr, CvArr* dstarr, 
         cvSetRows( src1, dst, 0, src1->rows );
         cvSetRows( src2, dst, src1->rows, src1->rows + src2->rows );
     }
-    __END__;
+    __CV_END__;
 }
 
 

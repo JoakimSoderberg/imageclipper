@@ -24,9 +24,9 @@
 #ifndef CV_CROPIMAGEROI_INCLUDED
 #define CV_CROPIMAGEROI_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -72,7 +72,7 @@ CVAPI(void) cvPutImageROI( const IplImage* src,
     IplImage* _src = NULL;
     IplImage* _mask = NULL;
     CV_FUNCNAME( "cvPutImageROI" );
-    __BEGIN__;
+    __CV_BEGIN__;
     rect = cvRectFromRect32f( rect32f );
     angle = rect32f.angle;
 
@@ -167,7 +167,7 @@ CVAPI(void) cvPutImageROI( const IplImage* src,
         cvReleaseImage( &_mask );
     if( src != _src )
         cvReleaseImage( &_src );
-    __END__;
+    __CV_END__;
 }
 
 #endif

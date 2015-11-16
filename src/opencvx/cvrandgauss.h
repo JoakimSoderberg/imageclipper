@@ -25,8 +25,8 @@
 #define CV_RAND_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 
 double cvRandGauss( CvRNG* rng, double sigma );
 

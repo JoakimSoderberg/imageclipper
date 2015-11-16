@@ -24,9 +24,9 @@
 #ifndef CV_OPENING_INCLUDED
 #define CV_OPENING_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 CVAPI( void ) cvOpening( const CvArr* src, CvArr* dst, IplConvKernel* element = NULL, int iterations = 1 );
 /**

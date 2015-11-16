@@ -24,9 +24,9 @@
 #ifndef CV_RECT32F_INCLUDED
 #define CV_RECT32F_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 /******************* Structure Definitions ***************************/
 

@@ -17,8 +17,8 @@
 #define CV_GMMPDF_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #include <stdio.h>
 #include <iostream>
 #define _USE_MATH_DEFINES
@@ -71,7 +71,7 @@ void cvMatGmmPdf( const CvMat* samples, const CvMat* means, CvMat** covs, const 
     int K = means->cols;
     int type = samples->type;
     CV_FUNCNAME( "cvMatGmmPdf" ); // error handling
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( CV_IS_MAT(samples) );
     CV_ASSERT( CV_IS_MAT(means) );
     for( int k = 0; k < K; k++ )
@@ -110,7 +110,7 @@ void cvMatGmmPdf( const CvMat* samples, const CvMat* means, CvMat** covs, const 
     cvReleaseMat( &mean );
     cvReleaseMat( &_probs );
 
-    __END__;
+    __CV_END__;
 }
 
 /**

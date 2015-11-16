@@ -15,8 +15,8 @@
 #define CV_SKINCOLOR_GMM_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -55,7 +55,7 @@ void cvSkinColorGmm( const IplImage* _img, IplImage* mask, double threshold = 1.
 void cvSkinColorGmm( const IplImage* _img, IplImage* mask, double threshold, IplImage* probs )
 {
     CV_FUNCNAME( "cvSkinColorGmm" );
-    __BEGIN__;
+    __CV_BEGIN__;
     const int N = _img->height * _img->width;
     const int D = 3;
     const int K = 16;
@@ -163,7 +163,7 @@ void cvSkinColorGmm( const IplImage* _img, IplImage* mask, double threshold, Ipl
     cvReleaseMat( &Mask );
     cvReleaseImage( &img );
 
-    __END__;
+    __CV_END__;
 }
 
 

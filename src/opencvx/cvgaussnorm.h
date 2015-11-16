@@ -25,8 +25,8 @@
 #define CV_GAUSSNORM_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -65,7 +65,7 @@ void cvImgGaussNorm( const CvArr* img, CvArr* normed )
     CvMat *tmp_in;
     CvMat *sub_in;
     CV_FUNCNAME( "cvImgGaussNorm" );
-    __BEGIN__;
+    __CV_BEGIN__;
     if( !CV_IS_MAT(in) )
     {
         CV_CALL( in = cvGetMat( in, &instub, &coi ) );
@@ -117,7 +117,7 @@ void cvImgGaussNorm( const CvArr* img, CvArr* normed )
         cvReleaseMat( &tmp_in );
     }
     cvReleaseMat( &sub_in );
-    __END__;
+    __CV_END__;
 }
 
 

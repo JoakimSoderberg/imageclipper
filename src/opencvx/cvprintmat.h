@@ -25,8 +25,8 @@
 #define CV_PRINTMAT_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #include <stdio.h>
 #include <iostream>
 
@@ -75,7 +75,7 @@ CV_INLINE void cvPrintImageProperty( const IplImage* img )
 CV_INLINE void cvPrintMat( const CvArr* arr )
 {
     CV_FUNCNAME( "cvPrintMat" );
-    __BEGIN__;
+    __CV_BEGIN__;
     int row, col, ch;
     int coi = 0;
     CvMat matstub, *mat = (CvMat*)arr;
@@ -110,7 +110,7 @@ CV_INLINE void cvPrintMat( const CvArr* arr )
         printf("\n");
     }
     fflush( stdout );
-    __END__;
+    __CV_END__;
 }
 
 

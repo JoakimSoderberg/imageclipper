@@ -25,8 +25,8 @@
 #define CV_SETROW_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 
 CV_INLINE void cvSetRows( const CvArr* src, CvArr* dst,
                          int start_row, int end_row, int delta_row = 1 );
@@ -62,7 +62,7 @@ CV_INLINE void cvSetRows( const CvArr* src, CvArr* dst,
     CvMat *refmat, refmathdr;
     int rows;
     CV_FUNCNAME( "cvSetRows" );
-    __BEGIN__;
+    __CV_BEGIN__;
     if( !CV_IS_MAT(dstmat) )
     {
         CV_CALL( dstmat = cvGetMat( dstmat, &dstmatstub, &coi ) );
@@ -85,13 +85,13 @@ CV_INLINE void cvSetRows( const CvArr* src, CvArr* dst,
         refmat = cvGetRows( srcmat, &refmathdr, start_row, end_row, delta_row );
         cvCopy( refmat, dstmat );
     }
-    __END__;
+    __CV_END__;
 }
 /*
 CVAPI( void ) cvSetRows( const CvArr* subarr, CvArr* arr, int start_row, int end_row )
 {
     CV_FUNCNAME( "cvSetRows" );
-    __BEGIN__;
+    __CV_BEGIN__;
     int row, col, elem;
     int coi = 0;
     CvMat* submat = (CvMat*)subarr, submatstub;
@@ -131,7 +131,7 @@ CVAPI( void ) cvSetRows( const CvArr* subarr, CvArr* arr, int start_row, int end
             }
         }
     }
-    __END__;
+    __CV_END__;
 }
 */
 
