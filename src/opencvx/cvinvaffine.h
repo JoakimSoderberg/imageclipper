@@ -41,7 +41,7 @@ CVAPI(void) cvInvAffine( const CvMat* affine, CvMat* invaffine );
 CVAPI(void) cvInvAffine( const CvMat* affine, CvMat* invaffine )
 {
     CV_FUNCNAME( "cvCreateAffine" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( affine->rows == 2 && affine->cols == 3 );
     CV_ASSERT( invaffine->rows == 2 && invaffine->cols == 3 );
     CV_ASSERT( affine->type == invaffine->type );
@@ -55,7 +55,7 @@ CVAPI(void) cvInvAffine( const CvMat* affine, CvMat* invaffine )
     cvSetRows( InvAffine, invaffine, 0, 2 );
     cvReleaseMat( &Affine );
     cvReleaseMat( &InvAffine );
-    __END__;
+    __CV_END__;
 }
 
 #endif

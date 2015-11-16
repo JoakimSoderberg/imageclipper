@@ -61,7 +61,7 @@ CVAPI(mxArray*) cvmxArrayFromCvArr(const CvArr* arr)
     mxClassID classid; mxArray* mxarr = NULL;
     int row, col, ch;
 
-    __BEGIN__;
+    __CV_BEGIN__;
     if (!CV_IS_IMAGE(img)) {
         CV_CALL(img = cvGetImage(img, &imghdr));
     }
@@ -105,7 +105,7 @@ CVAPI(mxArray*) cvmxArrayFromCvArr(const CvArr* arr)
             }
         }
     }
-    __END__;
+    __CV_END__;
     return mxarr;
 }
 
@@ -129,7 +129,7 @@ CVAPI(IplImage*) cvmxArrayToIplImage(const mxArray* mxarr)
     mxClassID classid;
     int row, col, ch;
 
-    __BEGIN__;
+    __CV_BEGIN__;
     classid = mxGetClassID(mxarr);
     nDim = mxGetNumberOfDimensions(mxarr);
     dims = mxGetDimensions(mxarr);
@@ -168,7 +168,7 @@ CVAPI(IplImage*) cvmxArrayToIplImage(const mxArray* mxarr)
             }
         }
     }
-    __END__;
+    __CV_END__;
     return img;
 }
 

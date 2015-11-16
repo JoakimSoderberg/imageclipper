@@ -40,7 +40,7 @@ void cvSkinColorCrCb( const IplImage* _img, IplImage* mask, CvArr* distarr = NUL
 void cvSkinColorCrCb( const IplImage* _img, IplImage* mask, CvArr* distarr )
 {
     CV_FUNCNAME( "cvSkinColorCbCr" );
-    __BEGIN__;
+    __CV_BEGIN__;
     int width  = _img->width;
     int height = _img->height;
     CvMat* dist = (CvMat*)distarr, diststub;
@@ -132,7 +132,7 @@ void cvSkinColorCrCb( const IplImage* _img, IplImage* mask, CvArr* distarr )
             }
         }
     }
-    __END__;
+    __CV_END__;
 }
 
 

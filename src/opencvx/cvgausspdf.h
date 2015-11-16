@@ -71,7 +71,7 @@ void cvMatGaussPdf( const CvMat* samples, const CvMat* mean, const CvMat* cov, C
     int N = samples->cols;
     int type = samples->type;
     CV_FUNCNAME( "cvMatGaussPdf" ); // error handling
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( CV_IS_MAT(samples) );
     CV_ASSERT( CV_IS_MAT(mean) );
     CV_ASSERT( CV_IS_MAT(cov) );
@@ -114,7 +114,7 @@ void cvMatGaussPdf( const CvMat* samples, const CvMat* mean, const CvMat* cov, C
     cvReleaseMat( &subsample_T );
     cvReleaseMat( &value );
 
-    __END__;
+    __CV_END__;
 }
 
 /**

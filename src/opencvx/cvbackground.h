@@ -42,7 +42,7 @@ CVAPI(void) cvBackground( const IplImage* _img, const IplImage* _ref, IplImage* 
 CVAPI(void) cvBackground( const IplImage* _img, const IplImage* _ref, IplImage* _mask, int thresh )
 {
     CV_FUNCNAME( "cvBackground" ); // error handling
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( _img->width == _ref->width );
     CV_ASSERT( _img->width == _mask->width );
     CV_ASSERT( _img->height == _ref->height );
@@ -80,7 +80,7 @@ CVAPI(void) cvBackground( const IplImage* _img, const IplImage* _ref, IplImage* 
     cvReleaseImage( &img );
     cvReleaseImage( &ref );
     cvReleaseImage( &mask );
-    __END__;
+    __CV_END__;
 }
 
 /*

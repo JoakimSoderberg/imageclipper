@@ -377,12 +377,12 @@ void cvParticleInit( CvParticle* p, const CvParticle* init )
 void cvParticleSetBound( CvParticle* p, const CvMat* bound )
 {
     CV_FUNCNAME( "cvParticleSetBound" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( p->num_states == bound->rows );
     CV_ASSERT( 3 == bound->cols );
     //cvCopy( bound, p->bound );
     cvConvert( bound, p->bound );
-    __END__;
+    __CV_END__;
 }
 
 /**
@@ -396,12 +396,12 @@ void cvParticleSetBound( CvParticle* p, const CvMat* bound )
 void cvParticleSetNoise( CvParticle* p, CvRNG rng, const CvMat* std )
 {
     CV_FUNCNAME( "cvParticleSetNoise" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( p->num_states == std->rows );
     p->rng = rng;
     //cvCopy( std, p->std );
     cvConvert( std, p->std );
-    __END__;
+    __CV_END__;
 }
 
 /**
@@ -414,12 +414,12 @@ void cvParticleSetNoise( CvParticle* p, CvRNG rng, const CvMat* std )
 void cvParticleSetDynamics( CvParticle* p, const CvMat* dynamics )
 {
     CV_FUNCNAME( "cvParticleSetDynamics" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( p->num_states == dynamics->rows );
     CV_ASSERT( p->num_states == dynamics->cols );
     //cvCopy( dynamics, p->dynamics );
     cvConvert( dynamics, p->dynamics );
-    __END__;
+    __CV_END__;
 }
 
 /**
@@ -432,7 +432,7 @@ void cvReleaseParticle( CvParticle** particle )
 {
     CvParticle *p = NULL;
     CV_FUNCNAME( "cvReleaseParticle" );
-    __BEGIN__;
+    __CV_BEGIN__;
     p = *particle;
     if( !p ) EXIT;
     
@@ -442,7 +442,7 @@ void cvReleaseParticle( CvParticle** particle )
     cvReleaseMat( &p->particles );
     cvReleaseMat( &p->probs );
     cvFree( &p );
-    __END__;
+    __CV_END__;
 }
 
 /**
@@ -459,7 +459,7 @@ CvParticle* cvCreateParticle( int num_states, int num_observes, int num_particle
 {
     CvParticle *p = NULL;
     CV_FUNCNAME( "cvCreateParticle" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( num_states > 0 );
     CV_ASSERT( num_observes > 0 );
     CV_ASSERT( num_particles > 0 );
@@ -483,7 +483,7 @@ CvParticle* cvCreateParticle( int num_states, int num_observes, int num_particle
 
     cvZero( p->bound );
 
-    __END__;
+    __CV_END__;
     return p;
 }
 

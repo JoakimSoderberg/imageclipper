@@ -92,7 +92,7 @@ CVAPI(IplImage*) cvCreateAffineImage( const IplImage* src, const CvMat* affine,
     CvPoint pt[4];
     CvMat* invaffine;
     CV_FUNCNAME( "cvAffineImage" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( src->depth == IPL_DEPTH_8U );
     CV_ASSERT( affine->rows == 2 && affine->cols == 3 );
 
@@ -171,7 +171,7 @@ CVAPI(IplImage*) cvCreateAffineImage( const IplImage* src, const CvMat* affine,
         }
     }
     cvReleaseMat( &invaffine );
-    __END__;
+    __CV_END__;
     return dst;
 }
 

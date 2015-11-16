@@ -72,7 +72,7 @@ CVAPI(void) cvPutImageROI( const IplImage* src,
     IplImage* _src = NULL;
     IplImage* _mask = NULL;
     CV_FUNCNAME( "cvPutImageROI" );
-    __BEGIN__;
+    __CV_BEGIN__;
     rect = cvRectFromRect32f( rect32f );
     angle = rect32f.angle;
 
@@ -167,7 +167,7 @@ CVAPI(void) cvPutImageROI( const IplImage* src,
         cvReleaseImage( &_mask );
     if( src != _src )
         cvReleaseImage( &_src );
-    __END__;
+    __CV_END__;
 }
 
 #endif

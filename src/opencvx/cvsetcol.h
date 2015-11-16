@@ -59,7 +59,7 @@ CV_INLINE void cvSetCols( const CvArr* src, CvArr* dst,
     CvMat *refmat, refmathdr;
     int cols;
     CV_FUNCNAME( "cvSetCols" );
-    __BEGIN__;
+    __CV_BEGIN__;
     if( !CV_IS_MAT(dstmat) )
     {
         CV_CALL( dstmat = cvGetMat( dstmat, &dstmatstub, &coi ) );
@@ -82,14 +82,14 @@ CV_INLINE void cvSetCols( const CvArr* src, CvArr* dst,
         refmat = cvGetCols( srcmat, &refmathdr, start_col, end_col );
         cvCopy( refmat, dstmat );
     }
-    __END__;
+    __CV_END__;
 }
 
 /*
 CVAPI( void ) cvSetCols( const CvArr* subarr, CvArr* arr, int start_col, int end_col )
 {
 CV_FUNCNAME( "cvSetCols" );
-    __BEGIN__;
+    __CV_BEGIN__;
     int col, row, elem;
     int coi = 0;
     CvMat* submat = (CvMat*)subarr, submatstub;
@@ -123,7 +123,7 @@ CV_FUNCNAME( "cvSetCols" );
             }
         }
     }
-    __END__;
+    __CV_END__;
 }
 */
 

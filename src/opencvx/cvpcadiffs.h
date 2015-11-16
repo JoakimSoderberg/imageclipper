@@ -113,7 +113,7 @@ void cvMatPcaDiffs( const CvMat* samples, const CvMat* avg, const CvMat* eigenva
     CvMat *subsamples0, subsamples0hdr;
     CvScalar rho;
     CV_FUNCNAME( "cvMatPcaDiffs" );
-    __BEGIN__;
+    __CV_BEGIN__;
     CV_ASSERT( CV_IS_MAT(samples) );
     CV_ASSERT( CV_IS_MAT(avg) );
     CV_ASSERT( CV_IS_MAT(eigenvalues) );
@@ -210,7 +210,7 @@ void cvMatPcaDiffs( const CvMat* samples, const CvMat* avg, const CvMat* eigenva
     if( D == eigenvectors->rows ) {
         cvReleaseMat( &_eigenvectors );
     }
-    __END__;
+    __CV_END__;
 }
 
 /**
