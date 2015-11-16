@@ -27,10 +27,10 @@
 #pragma warning(disable:4819) // Save the file in Unicode format to prevent data loss
 #endif
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
-#include "highgui.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
+#include <opencv/highgui.h>
 #include <stdio.h>
 #include <math.h>
 #include <iostream>

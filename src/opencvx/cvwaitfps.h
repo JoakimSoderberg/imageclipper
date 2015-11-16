@@ -24,9 +24,9 @@
 #ifndef CV_WAITFPS_INCLUDED
 #define CV_WAITFPS_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 #include <time.h>
 

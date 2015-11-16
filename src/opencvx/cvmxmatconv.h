@@ -30,7 +30,7 @@
 #define CVMX_MATCONV_INCLUDED
 
 
-#include "cv.h"
+#include <opencv/cv.h>
 #include "mat.h"
 #include "matrix.h"
 #include "cvmxtypeconv.h"

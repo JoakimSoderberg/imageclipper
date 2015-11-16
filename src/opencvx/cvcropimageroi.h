@@ -24,9 +24,9 @@
 #ifndef CV_CROPIMAGEROI_INCLUDED
 #define CV_CROPIMAGEROI_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 

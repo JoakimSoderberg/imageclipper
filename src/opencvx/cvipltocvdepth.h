@@ -25,7 +25,7 @@
 #define CV_IPLTOCVDEPTH_INCLUDED
 
 
-#include "cv.h"
+#include <opencv/cv.h>
 
 CVAPI(int) cvIplToCvDepth(int depth);
 

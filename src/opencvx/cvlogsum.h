@@ -24,9 +24,9 @@
 #ifndef CV_LOGSUM_INCLUDED
 #define CV_LOGSUM_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 #include <float.h>
 #include <math.h>

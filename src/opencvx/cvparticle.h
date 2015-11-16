@@ -32,9 +32,9 @@
 #ifndef CV_PARTICLE_INCLUDED
 #define CV_PARTICLE_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 #include <time.h>
 #include "cvsetrow.h"

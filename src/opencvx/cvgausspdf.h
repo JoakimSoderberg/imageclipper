@@ -25,8 +25,8 @@
 #define CV_GAUSSPDF_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 

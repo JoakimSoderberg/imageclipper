@@ -25,8 +25,8 @@
 #define CV_SETCOL_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 
 CV_INLINE void cvSetCols( const CvArr* src, CvArr* dst,
                           int start_col, int end_col );

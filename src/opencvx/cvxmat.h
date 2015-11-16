@@ -24,9 +24,9 @@
 #ifndef CV_MATEXT_INCLUDED
 #define CV_MATEXT_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 #include "cvmatelemcn.h"
 #include "cvprintmat.h"

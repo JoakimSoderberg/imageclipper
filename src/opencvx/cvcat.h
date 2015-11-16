@@ -25,8 +25,8 @@
 #define CV_CAT_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #include "cvsetrow.h"
 #include "cvsetcol.h"
 

@@ -24,9 +24,9 @@
 #ifndef CV_CLOSING_INCLUDED
 #define CV_CLOSING_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 CVAPI(void) cvClosing( const CvArr* src, CvArr* dst, IplConvKernel* element = NULL, int iterations = 1 );
 

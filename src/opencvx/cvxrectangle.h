@@ -25,9 +25,9 @@
 #define CV_RECTANGLE_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cvcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cvcore.h>
 #include "highgui.h"
 #include <stdio.h>
 #define _USE_MATH_DEFINES

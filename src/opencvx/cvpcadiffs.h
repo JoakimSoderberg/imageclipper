@@ -12,8 +12,8 @@
 // program without meeting the above conditions.
 */
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 #include <stdio.h>
 #include <iostream>
 #define _USE_MATH_DEFINES

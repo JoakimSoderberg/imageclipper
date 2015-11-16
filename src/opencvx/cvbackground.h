@@ -24,9 +24,9 @@
 #ifndef CV_BACKGROUND_INCLUDED
 #define CV_BACKGROUND_INCLUDED
 
-#include "cv.h"
-#include "cvaux.h"
-#include "cxcore.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/cxcore.h>
 
 CVAPI(void) cvBackground( const IplImage* _img, const IplImage* _ref, IplImage* _mask, int thresh = 100 );
 

@@ -25,8 +25,8 @@
 #define CV_SETROW_INCLUDED
 
 
-#include "cv.h"
-#include "cvaux.h"
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
 
 CV_INLINE void cvSetRows( const CvArr* src, CvArr* dst,
                          int start_row, int end_row, int delta_row = 1 );
