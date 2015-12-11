@@ -579,10 +579,10 @@ void mouse_callback( int event, int x, int y, int flags, void* _param )
     if( !param->img )
         return;
 
-    if( x >= 32768 ) x -= 65536; // change left outsite to negative
+    if( x >= 32768 ) x -= 65536; // change left outside to negative
     if( y >= 32768 ) y -= 65536; // change top outside to negative
 
-    // MBUTTON or LBUTTON + SHIFT is to draw wathershed
+    // MBUTTON or LBUTTON + SHIFT is to draw watershed
     if( (event == CV_EVENT_MBUTTONDOWN) || 
         ( (event == CV_EVENT_LBUTTONDOWN) && (flags & CV_EVENT_FLAG_SHIFTKEY) ) ) // initialization
     {
@@ -626,7 +626,7 @@ void mouse_callback( int event, int x, int y, int flags, void* _param )
                             cvPointTo32f( param->shear ) );
     }
 
-    // RBUTTON to move rentangle or watershed marker
+    // RBUTTON to move rectangle or watershed marker
     else if( event == CV_EVENT_RBUTTONDOWN )
     {
         point0 = cvPoint( x, y );
@@ -859,7 +859,7 @@ void gui_usage()
     cout << "  Mouse Usage:" << endl;
     cout << "    Left  (select)          : Select or initialize a rectangle region." << endl;
     cout << "    Right (move or resize)  : Move by dragging inside the rectangle." << endl;
-    cout << "                              Resize by draggin outside the rectangle." << endl;
+    cout << "                              Resize by dragging outside the rectangle." << endl;
     cout << "    Middle or SHIFT + Left  : Initialize the watershed marker. Drag it. " << endl;
     cout << "  Keyboard Usage:" << endl;
     cout << "    s (save)                : Save the selected region as an image." << endl;
@@ -868,7 +868,7 @@ void gui_usage()
     cout << "    b (backward)            : Backward. " << endl;
     cout << "    q (quit) or ESC         : Quit. " << endl;
     cout << "    r (rotate) R (counter)  : Rotate rectangle in clockwise." << endl;
-    cout << "    e (expand) E (shrink)   : Expand the recntagle size." << endl;
+    cout << "    e (expand) E (shrink)   : Expand the rectagle size." << endl;
     cout << "    h (left) j (down) k (up) l (right) : Move rectangle. (vi-like keybinds)" << endl;
     cout << "                                         (+shift to move faster)" << endl;
     cout << "    y (left) u (down) i (up) o (right) : Resize rectangle (Move boundaries)." << endl;
