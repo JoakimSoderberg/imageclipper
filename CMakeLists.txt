@@ -30,7 +30,7 @@ find_package(OpenCV REQUIRED)
 
 add_executable(imageclipper src/imageclipper.cpp)
 
-include_directories(${Boost_INCLUDE_DIR} src)
+include_directories(${Boost_INCLUDE_DIR} ${OpenCV_INCLUDE_DIRS} src)
 link_directories(${Boost_LIBRARY_DIR})
 target_link_libraries(imageclipper ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
