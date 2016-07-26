@@ -1,7 +1,7 @@
 Image Clipper
 -------------
 
-This is a fork of the [imageclipper](https://github.com/JoakimSoderberg/imageclipper)
+This is a fork of the [imageclipper](https://code.google.com/p/imageclipper/)
 program initially written by Naotoshi Seo.
 
 This fork was made initially for myself to improve its capabilities. 
