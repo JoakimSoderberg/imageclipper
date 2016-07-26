@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ACTIONS_HPP__
+#define __ACTIONS_HPP__
 
 #include <opencv2/opencv.hpp>
 #include "Global.h"
@@ -170,3 +171,5 @@ void act_move_process(CvCallbackParam* param, MouseCallbackStatus* status, int x
 		status->hit_point = cvPoint(x, y);
 	}
 }
+
+#endif // __ACTIONS_HPP__
