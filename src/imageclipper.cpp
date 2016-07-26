@@ -478,7 +478,7 @@ void key_callback(const ArgParam* arg, CvCallbackParam* param)
 		{
 			if (param->rect.width > 0 && param->rect.height > 0)
 			{
-				CvRect _rect = cvScaleRect(param->rect, param->scale_factor);
+				CvRect _rect = cvScaleRect(param->rect, 1 / param->scale_factor);
 				string output_path = icFormat(
 					param->output_format, fs::dirname(filename),
 					fs::filename(filename), fs::extension(filename),
