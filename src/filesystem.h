@@ -105,9 +105,7 @@ namespace fs {
         return false;
     }
 
-    vector<string> filelist( const string& dirpath, 
-                             const vector<string>& extensions,
-                             string file_type = "all" )
+    vector<string> filelist( const string& dirpath, const vector<string>& extensions, string file_type = "all" )
     {
         vector<string> filelist;
         boost::filesystem::path fs_dirpath( dirpath );
@@ -118,10 +116,8 @@ namespace fs {
         bool list_other        = ( !list_directory && !list_regular_file && !list_symlink );
         bool list_all          = ( file_type == "all" );
         
-        if( !boost::filesystem::exists( fs_dirpath ) || 
-            !boost::filesystem::is_directory( fs_dirpath ) ) {
+        if( !boost::filesystem::exists(fs_dirpath) || !boost::filesystem::is_directory(fs_dirpath) )
             return filelist;
-        }
         
         boost::filesystem::directory_iterator iter( fs_dirpath ), end_iter;
         for( ; iter != end_iter; ++iter ) {

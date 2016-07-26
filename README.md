@@ -1,20 +1,26 @@
 Image Clipper
 -------------
 
-This is a fork of the [imageclipper](https://code.google.com/p/imageclipper/)
+This is a fork of the [imageclipper](https://github.com/JoakimSoderberg/imageclipper)
+program edited by Joakim Soderberg. 
+Which is a fork of the [imageclipper](https://code.google.com/p/imageclipper/)
 program initially written by Naotoshi Seo.
 
-This fork was made initially for myself to be able to compile the program on OSX.
-Since I used [CMake](http://www.cmake.org/) it was easy to make one build that
-works on all platforms.
+This fork was made initially for myself to improve its capabilities. 
+
 
 From the original description:
 
-> It is often required to crop images manually fast for computer vision researchers
-> to gather training and testing image sets, e.g., cropping faces in images.
+> It is often required to crop images manually fast for computer vision researchers to gather training and testing image sets, e.g., cropping faces in images.
 >
-> This simple multi-platform (Windows, OSX and Linux were verified) software helps
-> you to clip images manually fast.
+> This simple multi-platform (Windows, OSX and Linux were verified) software helps you to clip images manually fast.
+
+Addition:
+> Add some actions which similar to Photoshop's actions, such Ctrl & Draw to draw a square rather than a rectangle, Alt & Draw to draw a rectangle from the center, and so on.
+>
+> Fixed the capture size
+>
+> Friendly UI and operations
 
 ## Building
 
