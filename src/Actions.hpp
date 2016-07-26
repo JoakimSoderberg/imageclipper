@@ -82,7 +82,6 @@ void act_move_begin(CvCallbackParam* param, MouseCallbackStatus* status, int x, 
 	else if ((param->rect.x < x && x < param->rect.x + param->rect.width) && (param->rect.y < y && y < param->rect.y + param->rect.height))
 		status->move_rect = true;
 
-	// otherwise
 	else
 	{
 		if (x <= param->rect.x)
