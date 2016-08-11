@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __GLOBAL_H__
+#define __GLOBAL_H__
 
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -56,3 +57,5 @@ typedef struct ArgParam {
 	const char* output_format;						// Pattern - user specifying output pattern
 	int frame;										// Num - how much frame does the program need read from video
 } ArgParam;
+
+#endif // __GLOBAL_H__
