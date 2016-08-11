@@ -1,18 +1,18 @@
 /**
 * The MIT License
-*
+* 
 * Copyright (c) 2008, Naotoshi Seo <sonots(at)umd.edu>
-*
+* 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-*
+* 
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
-*
+* 
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,7 +21,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
 #ifdef _MSC_VER // MS Visual Studio
 #pragma warning(disable:4996)
 #pragma warning(disable:4244) // possible loss of data
@@ -54,35 +53,59 @@
 
 using namespace std;
 
+/************************************ Structure *************************************/
 
+/**
+* A Callback function structure
+*/
+typedef struct CvCallbackParam {
+    const char* w_name;
+    const char* miniw_name;
+    IplImage* img;
+    CvRect rect;
+    CvRect circle; // use x, y for center, width as radius. width == 0 means watershed is off
+    int rotate;
+    CvPoint shear;
+    vector<string> imtypes;
+    vector<string> filelist; // for image or directory load
+    vector<string>::iterator fileiter;
+    CvCapture* cap;          // for video load
+    int frame;               // video iter
+    const char* output_format;
+} CvCallbackParam ;
 
-
+/**
+* Command Argument structure
+*/
+typedef struct ArgParam {
+    const char* name;
+    string reference;
+    const char* imgout_format;
+    const char* vidout_format;
+    const char* output_format;
+    int   frame;
+} ArgParam;
 
 /************************* Function Prototypes *********************************/
-void printHelpInfo(const ArgParam* arg);
-void printUsage();
-void arg_parse(int argc, char** argv, ArgParam* arg = NULL);
-void load_reference(const ArgParam* arg, CvCallbackParam* param);
-void mouse_callback(int event, int x, int y, int flags, void* _param);
-void key_callback(const ArgParam* arg, CvCallbackParam* param);
-
-
-
+void arg_parse( int argc, char** argv, ArgParam* arg = NULL );
+void usage( const ArgParam* arg );
+void gui_usage();
+void mouse_callback( int event, int x, int y, int flags, void* _param );
+void load_reference( const ArgParam* arg, CvCallbackParam* param );
+void key_callback( const ArgParam* arg, CvCallbackParam* param );
 
 /************************* Main ************************************************/
 
-int main(int argc, char *argv[])
+int main( int argc, char *argv[] )
 {
-	//system("mode con lines=50 cols=80");
-
-	// initialization
+    // initialization
 	CvCallbackParam init_param = {
-		"<S> Save <F> Forward <SPACE> s and f <B> Backward <ESC> Exit",			// main window's name
-		"Cropped",																// cropped window's name
-		NULL,																	// source image pointer
-		cvRect(0, 0, 0, 0),														// selected rect
-		cvRect(0, 0, 0, 0),														// watershed
-		0,																		// rotate
+		"<S> Save <F> Forward <SPACE> s and f <B> Backward <ESC> Exit",	
+		"Cropped",
+		NULL,
+		cvRect(0, 0, 0, 0),
+		cvRect(0, 0, 0, 0),	
+		0,
 		cvPoint(0, 0),
 		vector<string>(),
 		vector<string>(),
@@ -91,10 +114,10 @@ int main(int argc, char *argv[])
 		0,
 		nullptr,
 		
-		cvSize(0, 0),															// screen resolution
-		NULL,																	// resized image pointer
-		1.0f,																	// displayed imaged scale factor
-		2.0f
+		cvSize(0, 0),
+		NULL,
+		1.0f,		// global scale factor
+		2.0f		// scale factor of capture
 	};
 	{
 		init_param.imtypes.push_back("bmp");
@@ -138,121 +161,7 @@ int main(int argc, char *argv[])
 	cvDestroyWindow(param->miniw_name);
 }
 
-/**
-* Print Appliaction Help Information
-*/
-void printHelpInfo(const ArgParam* arg)
-{
-	cout << "ImageClipper - image clipping helper tool." << endl;
-	cout << "Command Usage: " << fs::basename(arg->name);
-	cout << " [option]... [arg_reference]" << endl;
-	cout << "  <arg_reference = " << arg->reference << ">" << endl;
-	cout << "    <arg_reference> would be a directory or an image or a video filename." << endl;
-	cout << "    For a directory, image files in the directory will be read sequentially." << endl;
-	cout << "    For an image, it starts to read a directory from the specified image file. " << endl;
-	cout << "    (A file is judged as an image based on its filename extension.)" << endl;
-	cout << "    A file except images is tried to be read as a video and read frame by frame. " << endl;
-	cout << endl;
-	cout << "  Options" << endl;
-	cout << "    -o <output_format = imgout_format or vidout_format>" << endl;
-	cout << "        Determine the output file path format." << endl;
-	cout << "        This is a syntax sugar for -i and -v. " << endl;
-	cout << "        Format Expression)" << endl;
-	cout << "            %d - dirname of the original" << endl;
-	cout << "            %i - filename of the original without extension" << endl;
-	cout << "            %e - filename extension of the original" << endl;
-	cout << "            %x - upper-left x coord" << endl;
-	cout << "            %y - upper-left y coord" << endl;
-	cout << "            %w - width" << endl;
-	cout << "            %h - height" << endl;
-	cout << "            %r - rotation degree" << endl;
-	cout << "            %. - shear deformation in x coord" << endl;
-	cout << "            %, - shear deformation in y coord" << endl;
-	cout << "            %f - frame number (for video)" << endl;
-	cout << "        Example) ./$i_%04x_%04y_%04w_%04h.%e" << endl;
-	cout << "            Store into software directory and use image type of the original." << endl;
-	cout << "    -i <imgout_format = " << arg->imgout_format << ">" << endl;
-	cout << "        Determine the output file path format for image inputs." << endl;
-	cout << "    -v <vidout_format = " << arg->vidout_format << ">" << endl;
-	cout << "        Determine the output file path format for a video input." << endl;
-	cout << "    -f" << endl;
-	cout << "    --frame <frame = 1> (video)" << endl;
-	cout << "        Determine the frame number of video to start to read." << endl;
-	cout << "    -h" << endl;
-	cout << "    --help" << endl;
-	cout << "        Show this help" << endl;
-	cout << endl;
-	cout << "  Supported Image Types" << endl;
-	cout << "      bmp|dib|jpeg|jpg|jpe|png|pbm|pgm|ppm|sr|ras|tiff|exr|jp2" << endl;
-}
-
-/**
-* Print Application Usage
-*/
-void printUsage()
-{
-	cout << "Application Usage:" << endl;
-	cout << "  Mouse Usage:" << endl;
-	cout << "    Left  (select)          : Select or initialize a rectangle region." << endl;
-	cout << "      Ctrl + Left           : Select a square region. It is combinable." << endl;
-	cout << "      Alt + Left            : Select from center. It is combinable." << endl;
-	cout << "    Right (move or resize)  : Move by dragging inside the rectangle." << endl;
-	cout << "                              Resize by dragging outside the rectangle." << endl;
-	cout << "    Middle or SHIFT + Left  : Initialize the watershed marker. Drag it. " << endl;
-	cout << "  Keyboard Usage:" << endl;
-	cout << "    + (zoom in)             : zoom in current image." << endl;
-	cout << "    - (zoom out)            : zoom out current image." << endl;
-	cout << "    s (save)                : Save the selected region as an image." << endl;
-	cout << "    f (forward)             : Forward. Show next image." << endl;
-	cout << "    SPACE                   : Save and Forward." << endl;
-	cout << "    b (backward)            : Backward. " << endl;
-	cout << "    q (quit) or ESC         : Quit. " << endl;
-	cout << "    r (rotate) R (counter)  : Rotate rectangle in clockwise." << endl;
-	cout << "    e (expand) E (shrink)   : Expand the rectagle size." << endl;
-	cout << "    h (left) j (down) k (up) l (right) : Move rectangle. (vi-like keybinds)" << endl;
-	cout << "                                         (+shift to move faster)" << endl;
-	cout << "    y (left) u (down) i (up) o (right) : Resize rectangle (Move boundaries)." << endl;
-	cout << "    n (left) m (down) , (up) . (right) : Shear deformation." << endl;
-}
-
-
-/**
- * Arguments Processing
- */
-void arg_parse(int argc, char** argv, ArgParam *arg)
-{
-	arg->name = argv[0];
-	for (int i = 1; i < argc; i++)
-	{
-		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help"))
-		{
-			printHelpInfo(arg);
-			exit(0);
-		}
-		else if (!strcmp(argv[i], "-o") || !strcmp(argv[i], "--output_format"))
-		{
-			arg->output_format = argv[++i];
-		}
-		else if (!strcmp(argv[i], "-i") || !strcmp(argv[i], "--imgout_format"))
-		{
-			arg->imgout_format = argv[++i];
-		}
-		else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--vidout_format"))
-		{
-			arg->vidout_format = argv[++i];
-		}
-		else if (!strcmp(argv[i], "-f") || !strcmp(argv[i], "--frame"))
-		{
-			arg->frame = atoi(argv[++i]);
-		}
-		else
-		{
-			arg->reference = string(argv[i]);
-		}
-	}
-}
-
-void load_reference(const ArgParam* arg, CvCallbackParam* param)
+void load_reference( const ArgParam* arg, CvCallbackParam* param )
 {
 	bool is_directory = fs::is_directory(arg->reference);
 	bool is_image = fs::match_extensions(arg->reference, param->imtypes);
@@ -357,91 +266,9 @@ void load_reference(const ArgParam* arg, CvCallbackParam* param)
 	}
 }
 
-/**
-* cvSetMouseCallback function
-*/
-void mouse_callback(int event, int x, int y, int flags, void* _param)
+void key_callback( const ArgParam* arg, CvCallbackParam* param )
 {
-	CvCallbackParam* param = (CvCallbackParam*)_param;
-	static MouseCallbackStatus status = {
-		cvPoint(0, 0),		// point0
-		false,				// move_rect
-		false,				// resize_rect_left
-		false,				// resize_rect_right
-		false,				// resize_rect_top
-		false,				// resize_rect_bottom
-		false,				// move_watershed
-		false				// resize_watershed
-	};
-
-	// Fix Error
-	if (!param->img_src || !param->img_display) return;
-	if (x >= 32768) x -= 65536; // change left outside to negative
-	if (y >= 32768) y -= 65536; // change top outside to negative
-
-	switch (event)
-	{
-		// Mouse Move
-	case CV_EVENT_MOUSEMOVE:
-		if (!flags)															// Just move
-			;
-		else if (flags & CV_EVENT_FLAG_LBUTTON)								// Left Button
-			if (flags == (CV_EVENT_FLAG_SHIFTKEY | CV_EVENT_FLAG_LBUTTON))		// Shift + Left
-				act_watershed_process(param, &status, x, y, flags);
-			else																// [Ctrl] + [Alt] + Left
-				act_draw(param, &status, x, y, flags);
-		else if (flags == CV_EVENT_FLAG_RBUTTON)							// Right Button
-			act_move_process(param, &status, x, y, flags);
-		else if (flags == CV_EVENT_FLAG_MBUTTON)							// Middle Button
-			act_watershed_process(param, &status, x, y, flags);
-		break;
-
-		// Click Left Button
-	case CV_EVENT_LBUTTONDOWN:
-		if (flags == CV_EVENT_FLAG_LBUTTON)
-			status.hit_point = cvPoint(x, y);
-		else if (flags == (CV_EVENT_FLAG_SHIFTKEY | CV_EVENT_FLAG_LBUTTON))
-			act_watershed_begin(param, &status, x, y, flags);
-		else
-			status.hit_point = cvPoint(x, y);
-		break;
-
-		// Click Right Button
-	case CV_EVENT_RBUTTONDOWN:
-		if (flags == CV_EVENT_FLAG_RBUTTON)	
-			act_move_begin(param, &status, x, y, flags);
-		break;
-
-		// Click Middle Button
-	case CV_EVENT_MBUTTONDOWN:
-		if (flags == CV_EVENT_FLAG_MBUTTON)
-			act_watershed_begin(param, &status, x, y, flags);
-		break;
-
-		// Common finish
-	case CV_EVENT_LBUTTONUP:
-	case CV_EVENT_RBUTTONUP:
-	case CV_EVENT_MBUTTONUP:
-		status.move_rect = false;
-		status.resize_rect_left = false;
-		status.resize_rect_right = false;
-		status.resize_rect_top = false;
-		status.resize_rect_bottom = false;
-		status.move_watershed = false;
-		status.resize_watershed = false;
-		break;
-
-		// Undefined
-	case CV_EVENT_LBUTTONDBLCLK:
-	case CV_EVENT_RBUTTONDBLCLK:
-	case CV_EVENT_MBUTTONDBLCLK:
-		break;
-	}
-}
-
-void key_callback(const ArgParam* arg, CvCallbackParam* param)
-{
-	string filename = param->cap == NULL ? *param->fileiter : arg->reference;
+ 	string filename = param->cap == NULL ? *param->fileiter : arg->reference;
 
 	cvShowImageAndRectangle(param->w_name, param->img_display, cvRect32fFromRect(param->rect, param->rotate), cvPointTo32f(param->shear));
 	cvShowCroppedImage(param->miniw_name, param->img_src, cvRect32fFromRect(cvScaleRect(param->rect, 1 / param->scale_factor), param->rotate), cvPointTo32f(param->shear), param->cap_scale_factor);
@@ -786,3 +613,199 @@ void key_callback(const ArgParam* arg, CvCallbackParam* param)
 		}
 	}
 }
+
+/**
+* cvSetMouseCallback function
+*/
+void mouse_callback( int event, int x, int y, int flags, void* _param )
+{
+	CvCallbackParam* param = (CvCallbackParam*)_param;
+	static MouseCallbackStatus status = {
+		cvPoint(0, 0),		// point0
+		false,				// move_rect
+		false,				// resize_rect_left
+		false,				// resize_rect_right
+		false,				// resize_rect_top
+		false,				// resize_rect_bottom
+		false,				// move_watershed
+		false				// resize_watershed
+	};
+
+	// Fix Error
+	if (!param->img_src || !param->img_display) return;
+	if (x >= 32768) x -= 65536; // change left outside to negative
+	if (y >= 32768) y -= 65536; // change top outside to negative
+
+	switch (event)
+	{
+		// Mouse Move
+	case CV_EVENT_MOUSEMOVE:
+		if (!flags)															// Just move
+			;
+		else if (flags & CV_EVENT_FLAG_LBUTTON)								// Left Button
+			if (flags == (CV_EVENT_FLAG_SHIFTKEY | CV_EVENT_FLAG_LBUTTON))		// Shift + Left
+				act_watershed_process(param, &status, x, y, flags);
+			else																// [Ctrl] + [Alt] + Left
+				act_draw(param, &status, x, y, flags);
+		else if (flags == CV_EVENT_FLAG_RBUTTON)							// Right Button
+			act_move_process(param, &status, x, y, flags);
+		else if (flags == CV_EVENT_FLAG_MBUTTON)							// Middle Button
+			act_watershed_process(param, &status, x, y, flags);
+		break;
+
+		// Click Left Button
+	case CV_EVENT_LBUTTONDOWN:
+		if (flags == CV_EVENT_FLAG_LBUTTON)
+			status.hit_point = cvPoint(x, y);
+		else if (flags == (CV_EVENT_FLAG_SHIFTKEY | CV_EVENT_FLAG_LBUTTON))
+			act_watershed_begin(param, &status, x, y, flags);
+		else
+			status.hit_point = cvPoint(x, y);
+		break;
+
+		// Click Right Button
+	case CV_EVENT_RBUTTONDOWN:
+		if (flags == CV_EVENT_FLAG_RBUTTON)	
+			act_move_begin(param, &status, x, y, flags);
+		break;
+
+		// Click Middle Button
+	case CV_EVENT_MBUTTONDOWN:
+		if (flags == CV_EVENT_FLAG_MBUTTON)
+			act_watershed_begin(param, &status, x, y, flags);
+		break;
+
+		// Common finish
+	case CV_EVENT_LBUTTONUP:
+	case CV_EVENT_RBUTTONUP:
+	case CV_EVENT_MBUTTONUP:
+		status.move_rect = false;
+		status.resize_rect_left = false;
+		status.resize_rect_right = false;
+		status.resize_rect_top = false;
+		status.resize_rect_bottom = false;
+		status.move_watershed = false;
+		status.resize_watershed = false;
+		break;
+
+		// Undefined
+	case CV_EVENT_LBUTTONDBLCLK:
+	case CV_EVENT_RBUTTONDBLCLK:
+	case CV_EVENT_MBUTTONDBLCLK:
+		break;
+	}
+}
+
+/**
+ * Arguments Processing
+ */
+void arg_parse( int argc, char** argv, ArgParam *arg )
+{
+	arg->name = argv[0];
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help"))
+		{
+			printHelpInfo(arg);
+			exit(0);
+		}
+		else if (!strcmp(argv[i], "-o") || !strcmp(argv[i], "--output_format"))
+		{
+			arg->output_format = argv[++i];
+		}
+		else if (!strcmp(argv[i], "-i") || !strcmp(argv[i], "--imgout_format"))
+		{
+			arg->imgout_format = argv[++i];
+		}
+		else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--vidout_format"))
+		{
+			arg->vidout_format = argv[++i];
+		}
+		else if (!strcmp(argv[i], "-f") || !strcmp(argv[i], "--frame"))
+		{
+			arg->frame = atoi(argv[++i]);
+		}
+		else
+		{
+			arg->reference = string(argv[i]);
+		}
+	}
+}
+
+/**
+* Print out usage
+*/
+void usage( const ArgParam* arg )
+{
+	cout << "ImageClipper - image clipping helper tool." << endl;
+	cout << "Command Usage: " << fs::basename(arg->name);
+	cout << " [option]... [arg_reference]" << endl;
+	cout << "  <arg_reference = " << arg->reference << ">" << endl;
+	cout << "    <arg_reference> would be a directory or an image or a video filename." << endl;
+	cout << "    For a directory, image files in the directory will be read sequentially." << endl;
+	cout << "    For an image, it starts to read a directory from the specified image file. " << endl;
+	cout << "    (A file is judged as an image based on its filename extension.)" << endl;
+	cout << "    A file except images is tried to be read as a video and read frame by frame. " << endl;
+	cout << endl;
+	cout << "  Options" << endl;
+	cout << "    -o <output_format = imgout_format or vidout_format>" << endl;
+	cout << "        Determine the output file path format." << endl;
+	cout << "        This is a syntax sugar for -i and -v. " << endl;
+	cout << "        Format Expression)" << endl;
+	cout << "            %d - dirname of the original" << endl;
+	cout << "            %i - filename of the original without extension" << endl;
+	cout << "            %e - filename extension of the original" << endl;
+	cout << "            %x - upper-left x coord" << endl;
+	cout << "            %y - upper-left y coord" << endl;
+	cout << "            %w - width" << endl;
+	cout << "            %h - height" << endl;
+	cout << "            %r - rotation degree" << endl;
+	cout << "            %. - shear deformation in x coord" << endl;
+	cout << "            %, - shear deformation in y coord" << endl;
+	cout << "            %f - frame number (for video)" << endl;
+	cout << "        Example) ./$i_%04x_%04y_%04w_%04h.%e" << endl;
+	cout << "            Store into software directory and use image type of the original." << endl;
+	cout << "    -i <imgout_format = " << arg->imgout_format << ">" << endl;
+	cout << "        Determine the output file path format for image inputs." << endl;
+	cout << "    -v <vidout_format = " << arg->vidout_format << ">" << endl;
+	cout << "        Determine the output file path format for a video input." << endl;
+	cout << "    -f" << endl;
+	cout << "    --frame <frame = 1> (video)" << endl;
+	cout << "        Determine the frame number of video to start to read." << endl;
+	cout << "    -h" << endl;
+	cout << "    --help" << endl;
+	cout << "        Show this help" << endl;
+	cout << endl;
+	cout << "  Supported Image Types" << endl;
+	cout << "      bmp|dib|jpeg|jpg|jpe|png|pbm|pgm|ppm|sr|ras|tiff|exr|jp2" << endl;
+}
+
+/**
+* Print Application Usage
+*/
+void gui_usage()
+{
+	cout << "Application Usage:" << endl;
+	cout << "  Mouse Usage:" << endl;
+	cout << "    Left  (select)          : Select or initialize a rectangle region." << endl;
+	cout << "      Ctrl + Left           : Select a square region. It is combinable." << endl;
+	cout << "      Alt + Left            : Select from center. It is combinable." << endl;
+	cout << "    Right (move or resize)  : Move by dragging inside the rectangle." << endl;
+	cout << "                              Resize by dragging outside the rectangle." << endl;
+	cout << "    Middle or SHIFT + Left  : Initialize the watershed marker. Drag it. " << endl;
+	cout << "  Keyboard Usage:" << endl;
+	cout << "    + (zoom in)             : zoom in current image." << endl;
+	cout << "    - (zoom out)            : zoom out current image." << endl;
+	cout << "    s (save)                : Save the selected region as an image." << endl;
+	cout << "    f (forward)             : Forward. Show next image." << endl;
+	cout << "    SPACE                   : Save and Forward." << endl;
+	cout << "    b (backward)            : Backward. " << endl;
+	cout << "    q (quit) or ESC         : Quit. " << endl;
+	cout << "    r (rotate) R (counter)  : Rotate rectangle in clockwise." << endl;
+	cout << "    e (expand) E (shrink)   : Expand the rectagle size." << endl;
+	cout << "    h (left) j (down) k (up) l (right) : Move rectangle. (vi-like keybinds)" << endl;
+	cout << "                                         (+shift to move faster)" << endl;
+	cout << "    y (left) u (down) i (up) o (right) : Resize rectangle (Move boundaries)." << endl;
+	cout << "    n (left) m (down) , (up) . (right) : Shear deformation." << endl;
+}
+
