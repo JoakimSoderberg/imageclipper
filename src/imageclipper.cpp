@@ -53,41 +53,9 @@
 
 using namespace std;
 
-/************************************ Structure *************************************/
-
-/**
-* A Callback function structure
-*/
-typedef struct CvCallbackParam {
-    const char* w_name;
-    const char* miniw_name;
-    IplImage* img;
-    CvRect rect;
-    CvRect circle; // use x, y for center, width as radius. width == 0 means watershed is off
-    int rotate;
-    CvPoint shear;
-    vector<string> imtypes;
-    vector<string> filelist; // for image or directory load
-    vector<string>::iterator fileiter;
-    CvCapture* cap;          // for video load
-    int frame;               // video iter
-    const char* output_format;
-} CvCallbackParam ;
-
-/**
-* Command Argument structure
-*/
-typedef struct ArgParam {
-    const char* name;
-    string reference;
-    const char* imgout_format;
-    const char* vidout_format;
-    const char* output_format;
-    int   frame;
-} ArgParam;
-
 /************************* Function Prototypes *********************************/
 void arg_parse( int argc, char** argv, ArgParam* arg = NULL );
+void load_reference(const ArgParam* arg, CvCallbackParam* param);
 void usage( const ArgParam* arg );
 void gui_usage();
 void mouse_callback( int event, int x, int y, int flags, void* _param );
@@ -149,7 +117,7 @@ int main( int argc, char *argv[] )
 
 	// parse arguments
 	arg_parse(argc, argv, arg);
-	printUsage();
+	gui_usage();
 	load_reference(arg, param);
 
 	// Mouse and Key callback
@@ -179,14 +147,14 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 			param->filelist = fs::filelist(arg->reference, param->imtypes, "file");
 			if (param->filelist.empty())
 			{
-				printHelpInfo(arg);
+				usage(arg);
 				cerr << "No image file exist under the directory " << fs::realpath(arg->reference) << endl << endl;
 				exit(1);
 			}
 
 			if ((param->filelist.begin() + arg->frame) > param->filelist.end())
 			{
-				printHelpInfo(arg);
+				usage(arg);
 				cerr << "Specified frame " << arg->frame << " is past the end of the list of "
 					<< param->filelist.size() << " files " << endl;
 				exit(1);
@@ -198,7 +166,7 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 		{
 			if (!fs::exists(arg->reference))
 			{
-				printHelpInfo(arg);
+				usage(arg);
 				cerr << "The image file " << fs::realpath(arg->reference) << " does not exist." << endl << endl;
 				exit(1);
 			}
@@ -219,7 +187,7 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 	{
 		if (!fs::exists(arg->reference))
 		{
-			printHelpInfo(arg);
+			usage(arg);
 			cerr << "The file " << fs::realpath(arg->reference) << " does not exist or is not readable." << endl << endl;
 			exit(1);
 		}
@@ -229,7 +197,7 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 		param->img_src = cvQueryFrame(param->cap);
 		if (param->img_src == NULL)
 		{
-			printHelpInfo(arg);
+			usage(arg);
 			cerr << "The file " << fs::realpath(arg->reference) << " was assumed as a video, but not loadable." << endl << endl;
 			exit(1);
 		}
@@ -239,7 +207,7 @@ void load_reference( const ArgParam* arg, CvCallbackParam* param )
 	}
 	else
 	{
-		printHelpInfo(arg);
+		usage(arg);
 		cerr << "The directory " << fs::realpath(arg->reference) << " does not exist." << endl << endl;
 		exit(1);
 	}
@@ -706,7 +674,7 @@ void arg_parse( int argc, char** argv, ArgParam *arg )
 	{
 		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help"))
 		{
-			printHelpInfo(arg);
+			usage(arg);
 			exit(0);
 		}
 		else if (!strcmp(argv[i], "-o") || !strcmp(argv[i], "--output_format"))
