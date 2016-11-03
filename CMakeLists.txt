@@ -40,6 +40,8 @@ if (WITH_TBB)
 	target_link_libraries(imageclipper ${TBB_LIBRARIES})
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 message("OpenCV Libs: ${OpenCV_LIBS}")
 message("Boost libs: ${Boost_LIBRARIES}")
 message("Boost link dir: ${Boost_LIBRARY_DIR}")
