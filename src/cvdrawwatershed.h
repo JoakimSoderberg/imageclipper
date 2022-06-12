@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include <string>
 
+#include <opencv2/imgproc.hpp>
+
 // marker's shape is like circle
 // just for imageclipper.cpp for now
 CvRect cvDrawWatershed(IplImage* img, const CvRect circle)
@@ -68,7 +70,7 @@ inline CvRect cvShowImageAndWatershed(const char* w_name, const IplImage* img, c
 {
 	IplImage* clone = cvCloneImage(img);
 	CvRect rect = cvDrawWatershed(clone, circle);
-	cvRectangle(clone, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height), CV_RGB(255, 255, 0), 1);
+	cvRectangle(clone, cvPoint(rect.x, rect.y), cvPoint(rect.x + rect.width, rect.y + rect.height), cvScalar(0, 255, 255), 1);
 	cvShowImage(w_name, clone);
 	cvReleaseImage(&clone);
 	return rect;
